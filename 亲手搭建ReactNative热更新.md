@@ -78,7 +78,7 @@ bundle文件的路径被包装成JSBundleLoader，然后作为参数之一给rec
 ##bundle太大怎么办？
 通过以上结论，已经大致摸清RN热更新的思路。巴特！在实践中发现，一个普普通通的bundle少则大几百K，多能上M。这体积显然不能忍，否则乐了运营商坑了用户。那么有办法减小bundle的体积么？有！FB提供了‘--minify’来减小编译的bundle体积。但结果还是不太理想。在一筹莫展之际，不妨看看bundle文件是个什么鬼，说不定能找到突破点。
 其实bundle的本质是一个大的文本文件。
-![1.png](quiver-image-url/9B7F0C4D723CA9514861D4593D7061DB.jpg)
+![1.png](https://github.com/mxy1228/ReactNativeHotUpdate/blob/master/resources/2084A7708BE9229E1EA26729F96647B0.jpg)
 这就有办法了，可以针对文本文件进行差量更新！
 笔者之前做某应用市场时做过APK增量更新，当时用的是开源的[bsdiff/patch](http://www.daemonology.net/bsdiff/)。它的原理是对文件进行二进制差异分析。理论上用这个库可以完成bundle文件的增量差异分析。但笔者谷歌到另一个专门对文本文件进行差异分析的库[google-diff-match-patch](https://code.google.com/p/google-diff-match-patch/)。而且它支持Java, JavaScript, Dart, C++, C#, Objective C, Lua and Python多个平台。比以so文件包装的bsdiff易用性好很多。而且使用这个库可以让bundle差异生成的patch包同时支持iOS和Android两个平台。
 ```java
